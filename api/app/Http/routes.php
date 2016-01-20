@@ -29,3 +29,21 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+
+/**
+ * API Route
+ */
+Route::group(['prefix' => 'api'], function () {
+
+  Route::get('test', function() {
+    return Response::json("test");
+  });
+
+  // 認証情報取得
+  Route::get('/authenticate', 'AuthenticateController@get');
+
+  // 認証処理
+  Route::post('/authenticate', 'AuthenticateController@auth');
+
+});
