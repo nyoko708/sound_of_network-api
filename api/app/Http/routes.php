@@ -46,4 +46,7 @@ Route::group(['prefix' => 'api'], function () {
   // 認証処理
   Route::post('/authenticate', 'AuthenticateController@auth');
 
+  // ユーザー関連
+  Route::get('/user', 'UserController@get');
+  Route::post('/user', 'UserController@create');
 });
