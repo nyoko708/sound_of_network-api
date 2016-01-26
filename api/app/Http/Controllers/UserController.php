@@ -39,7 +39,7 @@ class UserController extends Controller
     ]);
 
     if ($validator->fails()) {
-      return response()->json(['status' => '400', 'message' => "Bad Request. Validation Error."]);
+      return response()->json(['status' => 'NG', 'message' => "Bad Request. Validation Error."]);
     }
 
     // データ取得
@@ -51,9 +51,9 @@ class UserController extends Controller
     // 存在すれば新規ユーザではない
     if(is_array($users) && array_key_exists("0", $users)) {
       if(is_object($users[0])) {
-        return response()->json(['status' => '200', 'message' => "aleady exists"]);
+        return response()->json(['status' => 'NG', 'message' => "Aleady exists"]);
       } else {
-        return response()->json(['status' => '400', 'message' => "Bad Request"]);
+        return response()->json(['status' => 'NG', 'message' => "Bad Request"]);
       }
     }
 
@@ -62,6 +62,6 @@ class UserController extends Controller
           ['email' => $input["email"], 'name' => $input["name"], 'password' => bcrypt($input["password"])]
         );
 
-    return response()->json(['status' => '200', 'message' => "Success"]);
+    return response()->json(['status' => 'OK', 'message' => "Success"]);
   }
 }
