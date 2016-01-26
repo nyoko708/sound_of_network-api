@@ -57,9 +57,11 @@ class UserController extends Controller
       }
     }
 
+    $date = date("Y-m-d H:i:s");
+
     // DB登録処理
     DB::table('users')->insert(
-          ['email' => $input["email"], 'name' => $input["name"], 'password' => bcrypt($input["password"])]
+          ['email' => $input["email"], 'name' => $input["name"], 'password' => bcrypt($input["password"]), 'created_at' => $date, 'updated_at' => $date]
         );
 
     return response()->json(['status' => 'OK', 'message' => "Success"]);
