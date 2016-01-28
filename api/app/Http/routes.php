@@ -36,11 +36,6 @@ Route::group(['middleware' => ['web']], function () {
  */
 Route::group(['prefix' => 'api'], function () {
 
-  Route::get('test', function() {
-    return Response::json("test");
-  });
-
-
   // ------------------ //
   // --- 認証系 API --- //
   // ------------------ //
@@ -62,5 +57,6 @@ Route::group(['prefix' => 'api'], function () {
   // --- プロジェクト系 API --- //
   // -------------------------- //
   Route::get('/project/{projectId?}', 'ProjectController@get')->where('projectId', '[0-9]+');
+
 
 });
