@@ -11,6 +11,7 @@ use DB;
 use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\UserModel;
 
 class UserController extends Controller
 {

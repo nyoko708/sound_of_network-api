@@ -50,6 +50,9 @@ Route::group(['prefix' => 'api'], function () {
   // --- ユーザー系 API --- //
   // ---------------------- //
   Route::get('/user', 'UserController@get');
+  Route::get('/user/cando', 'UserController@findCanDo');
+  Route::get('/user/{userId}', 'UserController@findUser')->where('userId', '[0-9]+');;
+  Route::get('/user/{userId}/cando', 'UserController@findCanDoOfUser')->where('userId', '[0-9]+');;
   Route::post('/user', 'UserController@create');
 
 
@@ -57,6 +60,14 @@ Route::group(['prefix' => 'api'], function () {
   // --- プロジェクト系 API --- //
   // -------------------------- //
   Route::get('/project/{projectId?}', 'ProjectController@get')->where('projectId', '[0-9]+');
+  Route::get('/project/{projectId}/members', 'ProjectController@members')->where('projectId', '[0-9]+');
+  Route::get('/project/search', 'ProjectController@search');
+  Route::post('/project/create', 'ProjectController@create');
 
+
+  // ------------------------ //
+  // --- リクエスト系 API --- //
+  // ------------------------ //
+  Route::get('/request/{requestId}', 'RequestController@get')->where('projectId', '[0-9]+');
 
 });
