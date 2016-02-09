@@ -28,11 +28,11 @@ class Projects extends Model
   /**
    * 自分がアサインされているプロジェクトのリストを取得する
    *
-   * @param 
+   * @param int $userId
    * @return array
    * @access public
    */
-  public function findMyProjectList()
+  public function findMyProjectList($userId)
   {
   }
 
@@ -59,5 +59,16 @@ class Projects extends Model
     return true;
   }
 
-
+  /**
+   * 既存のプロジェクトを更新する
+   *
+   * @param int $projectId
+   * @param array $projectData
+   * @return boolean
+   * @access public
+   */
+  public function updateProject($projectId, array $projectData)
+  {
+    return true;
+  }
 }
