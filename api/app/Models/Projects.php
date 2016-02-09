@@ -39,11 +39,25 @@ class Projects extends Model
   /**
    * 指定したProjectのデータを取得する
    *
-   * @param 
+   * @param int $id : project_id
    * @return array
    * @access public
    */
   public function findProject($id)
   {
   }
+
+  /**
+   * 新規にプロジェクトを作成する
+   *
+   * @param array $projectData
+   * @return boolean
+   * @access public
+   */
+  public function createProject(array $projectData)
+  {
+    return true;
+  }
+
+
 }

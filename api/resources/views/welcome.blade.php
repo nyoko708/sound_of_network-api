@@ -51,6 +51,11 @@
               password:<input type="text" name="password"><br>
               <input type="submit" name="userapi">
             </form>
+            <form method="post" action="/api/project/create">
+              name: <input type="text" name="name"><br>
+              token: <input type="text" name="token"><br>
+              <input type="submit" name="userapi">
+            </form>
         </div>
     </body>
 </html>
