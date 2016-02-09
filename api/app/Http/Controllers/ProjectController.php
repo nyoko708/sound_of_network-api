@@ -20,7 +20,7 @@ class ProjectController extends Controller
    */
   public function __construct(Projects $projects)
   {
-    $this->middleware('jwt.auth', ['except' => ['get', 'create']]);
+    $this->middleware('jwt.auth', ['except' => ['get']]);
     $this->projects = $projects;
   }
 
