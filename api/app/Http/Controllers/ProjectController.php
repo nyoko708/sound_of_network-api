@@ -53,7 +53,9 @@ class ProjectController extends Controller
     $postData = $request->input();
 
     // 新規登録処理
-    $this->projects->createProject($postData);
+    if($this->projects->createProject($postData) === false) {
+      return response()->json(['status' => 'ng', 'message' => 'create project miss.']);
+    }
 
     return response()->json(['status' => 'ok', 'message' => 'Success Create Project.']);
   }

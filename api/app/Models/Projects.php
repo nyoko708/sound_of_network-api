@@ -56,6 +56,24 @@ class Projects extends Model
    */
   public function createProject(array $projectData)
   {
+    try {
+
+      // プロジェクト作成
+      DB::transaction(function()
+      {
+        $projectId = DB::table('projects')->insertGetId(
+          ['name' => 'コンピュータミュージック作成プロジェクト', 'members_id' => 0, 'description' => 'hoeghoegehoegheohoあいうえおかきくけこ', 'access' => 1, 'goal_description' => '', 'good_sum' => 0, 'created_at' => time(), 'updated_at' => time()]
+        );
+
+        $projectMemberId = DB::table('project_member')->insertGetId(
+          ['project_id' => $projectId, 'user_id' => 1, 'created_at' => time(), 'updated_at' => time()]
+        );
+      });
+
+    } catch(Exception $e) {
+      return false;
+    }
+
     return true;
   }
 
