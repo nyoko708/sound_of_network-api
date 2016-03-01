@@ -45,6 +45,8 @@ class Projects extends Model
    */
   public function findProject($id)
   {
+    $project = array();
+
     try {
       $project = DB::table('projects')->where('id', $id)->first();
     } catch(Exception $e) {
@@ -63,25 +65,34 @@ class Projects extends Model
    */
   public function createProject(array $projectData)
   {
+    //error_log(var_export($insertData, true), 3, "/tmp/errors2.log");
+
+    DB::beginTransaction();
+
     try {
-
       // プロジェクト作成
-      DB::transaction(function()
-      {
-        $projectId = DB::table('projects')->insertGetId(
-          ['name' => 'コンピュータミュージック作成プロジェクト', 'members_id' => 0, 'description' => 'hoeghoegehoegheohoあいうえおかきくけこ', 'access' => 1, 'goal_description' => '', 'good_sum' => 0, 'created_at' => time(), 'updated_at' => time()]
-        );
+      $date = date("Y-m-d H:i:s");
+      $projectId = DB::table('projects')->insertGetId([
+        'name' => $projectData["name"],
+        'description' => $projectData["description"],
+        'access' => $projectData["access"],
+        'goal_description' => $projectData["goal_description"],
+        'good_sum' => 0,
+        'created_at' => $date,
+        'updated_at' => $date
+      ]);
 
-        $projectMemberId = DB::table('project_member')->insertGetId(
-          ['project_id' => $projectId, 'user_id' => 1, 'created_at' => time(), 'updated_at' => time()]
-        );
-      });
-
+      DB::table('project_members')->insert(
+        ['project_id' => $projectId, 'user_id' => 1, 'created_at' => $date, 'updated_at' => $date]
+      );
     } catch(Exception $e) {
+      DB::rollBack();
       return false;
     }
 
-    return true;
+    DB::commit();
+
+    return $projectId;
   }
 
   /**

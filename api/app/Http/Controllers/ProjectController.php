@@ -39,7 +39,7 @@ class ProjectController extends Controller
 
       // プロジェクトIDに紐付くデータ取得
       $project = $this->projects->findProject($projectId);
-      if($project === false) {
+      if($project === false || empty($project)) {
         return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
       }
 
@@ -60,10 +60,11 @@ class ProjectController extends Controller
     $postData = $request->input();
 
     // 新規登録処理
-    if($this->projects->createProject($postData) === false) {
+    $projectId = $this->projects->createProject($postData);
+    if($projectId === false) {
       return response()->json(['status' => 'ng', 'message' => 'create project miss.']);
     }
 
-    return response()->json(['status' => 'ok', 'message' => 'Success Create Project.']);
+    return response()->json(['status' => 'ok', 'projectId' => $projectId]);
   }
 }
