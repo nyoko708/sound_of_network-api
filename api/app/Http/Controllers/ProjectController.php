@@ -33,10 +33,17 @@ class ProjectController extends Controller
    */
   public function get($projectId = null)
   {
-    if(!is_null($projectId)){
-      return response()->json(['project' => $projectId]);
-    } else {
+    if(is_null($projectId)){
       return response()->json(['project' => 'list']);
+    } else {
+
+      // プロジェクトIDに紐付くデータ取得
+      $project = $this->projects->findProject($projectId);
+      if($project === false) {
+        return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
+      }
+
+      return response()->json(['status' => 'ok', 'project' => $project]);
     }
   }
 

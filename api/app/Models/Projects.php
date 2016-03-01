@@ -45,6 +45,13 @@ class Projects extends Model
    */
   public function findProject($id)
   {
+    try {
+      $project = DB::table('projects')->where('id', $id)->first();
+    } catch(Exception $e) {
+      return false;
+    }
+
+    return $project;
   }
 
   /**
