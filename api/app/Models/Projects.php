@@ -41,14 +41,21 @@ class Projects extends Model
    * @return array
    * @access public
    */
-  public function findMyProjectList($userId)
+  public function findMyProjects($userId)
   {
     try {
-      $myProject = DB::table('project_members')->where("user_id", $userId)->skip(0)->take(10)->orderBy('id', 'desc')->get();
+      $myProjects = DB::table('projects')
+        ->join('project_members', 'projects.id', '=', 'project_members.project_id')
+        ->select('projects.*')
+        ->where("user_id", $userId)
+        ->skip(0)
+        ->take(10)
+        ->orderBy('id', 'desc')
+        ->get();
     } catch(Exception $e) {
       return false;
     }
-    return $projectList;
+    return $myProjects;
   }
 
   /**

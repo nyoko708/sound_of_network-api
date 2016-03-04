@@ -45,6 +45,11 @@ Route::group(['prefix' => 'api'], function () {
   // 認証処理
   Route::post('/authenticate', 'AuthenticateController@auth');
 
+  // ---------------- //
+  // --- me系 API --- //
+  // ---------------- //
+  Route::get('/me/projects', 'ProjectController@myProject');
+
 
   // ---------------------- //
   // --- ユーザー系 API --- //

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Projects;
@@ -22,6 +25,23 @@ class ProjectController extends Controller
   {
     $this->middleware('jwt.auth', ['except' => ['get']]);
     $this->projects = $projects;
+  }
+
+  /**
+   * 自分がアサインしているプロジェクト取得 API
+   *
+   * @desc /me/projects
+   */
+  public function myProject()
+  {
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    $projects = $this->projects->findMyProjects($loginUser->id);
+
+    return response()->json(['status' => 'ok', 'projects' => $projects]);
   }
 
   /**
