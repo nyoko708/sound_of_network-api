@@ -17,12 +17,21 @@ class Projects extends Model
   /**
    * プロジェクトをデータから探す
    *
-   * @param 
+   * @param int $id
+   * @param string $name
+   * @param int $start
+   * @param int $limit
    * @return array
    * @access public
    */
-  public function searchProjectList()
+  public function searchProjectList($id=null, $name=null, $start=0, $limit=10)
   {
+    try {
+      $projectList = DB::table('projects')->skip(0)->take(10)->orderBy('id', 'desc')->get();
+    } catch(Exception $e) {
+      return false;
+    }
+    return $projectList;
   }
 
   /**
@@ -34,6 +43,12 @@ class Projects extends Model
    */
   public function findMyProjectList($userId)
   {
+    try {
+      $myProject = DB::table('project_members')->where("user_id", $userId)->skip(0)->take(10)->orderBy('id', 'desc')->get();
+    } catch(Exception $e) {
+      return false;
+    }
+    return $projectList;
   }
 
   /**
