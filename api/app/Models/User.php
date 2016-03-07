@@ -15,15 +15,18 @@ class User extends Model
    *
    * @param
    */
-  public function searchUser()
+  public function searchUser($userName=null, $start=0, $limit=10)
   {
   }
 
   /**
    * 指定したUSER_IDの情報を返す
-   *
    */
-  public function findProfile($id=null)
+  public function findUser($userId=null)
+  {
+  }
+
+  public function myProfile($userId)
   {
   }
 }
