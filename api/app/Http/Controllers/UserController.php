@@ -11,19 +11,44 @@ use DB;
 use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\UserModel;
+use App\Models\User;
 
 class UserController extends Controller
 {
   /**
+   * User Model のインスタンスを格納する
+   */
+  private $_userModelObj = null;
+
+  /**
    * constructor
    */
-  public function __construct()
+  public function __construct(User $user)
   {
     $this->middleware('jwt.auth', ['except' => ['create']]);
+
+    $this->_userModelObj = $user;
   }
 
-  public function get()
+  /**
+   * 自分のデータを取得する
+   */
+  public function myProfile()
+  {
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    $myProfile = $this->_userModelObj->myProfile($loginUser->id);
+
+    return response()->json(['status' => 'ok', 'profile' => $myProfile]);
+  }
+
+  /**
+   * 指定したIDのUserDataを取得する
+   */
+  public function get($id=null)
   {
     return response()->json(['user' => 'hogehoge']);
   }
