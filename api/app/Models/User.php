@@ -26,7 +26,7 @@ class User extends Model
    * @return
    * @access
    */
-  public function findUser($userId=null)
+  public function findUserList()
   {
     try {
       $users = DB::table('users')->skip(0)->take(10)->orderBy('id', 'desc')->get();

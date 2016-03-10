@@ -25,7 +25,7 @@ class UserController extends Controller
    */
   public function __construct(User $user)
   {
-    $this->middleware('jwt.auth', ['except' => ['create']]);
+    $this->middleware('jwt.auth', ['except' => ['create', 'get']]);
 
     $this->_userModelObj = $user;
   }
@@ -50,7 +50,13 @@ class UserController extends Controller
    */
   public function get($id=null)
   {
-    return response()->json(['user' => 'hogehoge']);
+    if(is_null($id)) {
+      $users = $this->_userModelObj->findUserList();
+      return response()->json(['status' => 'ok', 'profiles' => $users]);
+    } else {
+      $profile = $this->_userModelObj->myProfile($id);
+      return response()->json(['status' => 'ok', 'profile' => $profile]);
+    }
   }
 
   /**

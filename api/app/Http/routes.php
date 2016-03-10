@@ -55,8 +55,7 @@ Route::group(['prefix' => 'api'], function () {
   // ---------------------- //
   // --- ユーザー系 API --- //
   // ---------------------- //
-  Route::get('/user', 'UserController@get');
-  Route::get('/user/{userId}', 'UserController@findUser')->where('userId', '[0-9]+');;
+  Route::get('/user/{userId?}', 'UserController@get')->where('userId', '[0-9]');
   Route::get('/user/{userId}/cando', 'UserController@findCanDoOfUser')->where('userId', '[0-9]+');;
   Route::post('/user', 'UserController@create');
 
