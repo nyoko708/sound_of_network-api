@@ -29,7 +29,7 @@ class User extends Model
   public function findUserList()
   {
     try {
-      $users = DB::table('users')->skip(0)->take(10)->orderBy('id', 'desc')->get();
+      $users = DB::table('users')->select('id', 'name', 'email', 'description', 'area_id', 'cando_id')->skip(0)->take(10)->orderBy('id', 'desc')->get();
     } catch(Exception $e) {
       return false;
     }
