@@ -18,6 +18,23 @@ class Requests extends Model
   }
 
   /**
+   * 読んだステータスをupdateする
+   *
+   * @desc
+   */
+  public function updateReadStatus()
+  {
+  }
+
+  /**
+   * レスポンスステータスをupdateする
+   *
+   */
+  public function updateResponseStatus()
+  {
+  }
+
+  /**
    * リクエストを作成
    */
   public function createRequest($fromUserId, $toUserId, $toMessage)
