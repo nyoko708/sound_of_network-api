@@ -50,13 +50,14 @@ Route::group(['prefix' => 'api'], function () {
   // ---------------- //
   Route::get('/me/profile', 'UserController@myProfile');
   Route::get('/me/projects', 'ProjectController@myProject');
+  Route::get('/me/requests', 'RequestController@myRequests');
 
 
   // ---------------------- //
   // --- ユーザー系 API --- //
   // ---------------------- //
   Route::get('/user/{userId?}', 'UserController@get')->where('userId', '[0-9]');
-  Route::get('/user/{userId}/cando', 'UserController@findCanDoOfUser')->where('userId', '[0-9]+');;
+  Route::get('/user/{userId}/cando', 'UserController@findCanDoOfUser')->where('userId', '[0-9]+');
   Route::post('/user', 'UserController@create');
 
 
@@ -73,6 +74,8 @@ Route::group(['prefix' => 'api'], function () {
   // --- リクエスト系 API --- //
   // ------------------------ //
   Route::get('/request/{requestId}', 'RequestController@get')->where('projectId', '[0-9]+');
-  Route::post('/request/{requestId}', 'RequestController@create');
+  Route::post('/request/create', 'RequestController@create');
+  Route::post('/request/read', 'RequestController@read');
+  Route::post('/request/response', 'RequestController@response');
 
 });
