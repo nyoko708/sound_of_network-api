@@ -47,6 +47,16 @@ class RequestController extends Controller
    */
   public function myRequests()
   {
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    $requests = $this->_requestsModelObj->findMyRequests($loginUser->id);
+    if($requests === false) {
+      return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
+    }
+    return response()->json(['status' => 'ok', 'requests' => ['send' => $requests["send"], 'response' => $requests["response"]]]);
   }
 
   /**
@@ -71,7 +81,7 @@ class RequestController extends Controller
     $input = $request->only(['from_user_id', 'to_user_id', 'to_message']);
 
     // 作成
-    $requestId = $this->requests->createRequests($input);
+    $requestId = $this->_requestsModelObj->createRequest($input["from_user_id"], $input["to_user_id"], $input["to_message"]);
     if($requestId === false) {
       return response()->json(['status' => 'ng', 'message' => 'create request miss.']);
     }

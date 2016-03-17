@@ -13,8 +13,21 @@ class Requests extends Model
   /**
    * リクエスト取得
    */
-  public function findMyRequest($myUserId)
+  public function findMyRequests($userId)
   {
+    $requests = array();
+
+    try {
+      $sendRequests = DB::table('requests')->where("from_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
+      $responseRequests = DB::table('requests')->where("to_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
+    } catch(Exception $e) {
+      return false;
+    }
+
+    $requests["send"] = $sendRequests;
+    $requests["response"] = $responseRequests;
+
+    return $requests;
   }
 
   /**
@@ -42,20 +55,18 @@ class Requests extends Model
     $date = date("Y-m-d H:i:s");
 
     try {
-
-      DB::table('requests')->insert([
-        'from_user_id' => $fromUserId,
-        'to_user_id' => $toUserId,
-        'message' => $toMessage,
-        'read_status' => 0,
-        'created_at' => $date,
-        'updated_at' => $date
-      ]);
-
+      $id = DB::table('requests')->insertGetId([
+              'from_user_id' => $fromUserId,
+              'to_user_id' => $toUserId,
+              'message' => $toMessage,
+              'read_status' => 0,
+              'created_at' => $date,
+              'updated_at' => $date
+            ]);
     } catch(Exception $e) {
       return false;
     }
 
-    return true;
+    return $id;
   }
 }
