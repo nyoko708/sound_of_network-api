@@ -56,7 +56,7 @@ class RequestController extends Controller
     if($requests === false) {
       return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
     }
-    return response()->json(['status' => 'ok', 'requests' => ['send' => $requests["send"], 'response' => $requests["response"]]]);
+    return response()->json(['status' => 'ok', 'requests' => ['send' => $requests["send"], 'response' => $requests["receive"]]]);
   }
 
   /**

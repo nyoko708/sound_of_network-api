@@ -19,13 +19,13 @@ class Requests extends Model
 
     try {
       $sendRequests = DB::table('requests')->where("from_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
-      $responseRequests = DB::table('requests')->where("to_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
+      $receiveRequests = DB::table('requests')->where("to_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
     } catch(Exception $e) {
       return false;
     }
 
     $requests["send"] = $sendRequests;
-    $requests["response"] = $responseRequests;
+    $requests["receive"] = $receiveRequests;
 
     return $requests;
   }
