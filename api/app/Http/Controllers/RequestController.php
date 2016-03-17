@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use DB;
 use Validator;
 use App\Http\Requests;
-use App\Models\Requests;
+use App\Models\Requests as Req;
 
 class RequestController extends Controller
 {
@@ -25,7 +25,7 @@ class RequestController extends Controller
    * @param object $requests
    * @access public
    */
-  public function __construct(Requests $requests)
+  public function __construct(Req $requests)
   {
     $this->middleware('jwt.auth');
     $this->_requestsModelObj = $requests;
