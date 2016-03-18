@@ -31,6 +31,34 @@ class Requests extends Model
   }
 
   /**
+   *
+   */
+  public function findMySendRequest($userId, $requestId)
+  {
+    try {
+      $request = DB::table('requests')->where('from_user_id', $userId)->where('requests_id', $requestId)->get();
+    } catch(Exception $e) {
+      return false;
+    }
+
+    return $request;
+  }
+
+  /**
+   *
+   */
+  public function findMyReceiveRequest($userId, $requestId)
+  {
+    try {
+      $request = DB::table('requests')->where('to_user_id', $userId)->where('requests_id', $requestId)->get();
+    } catch(Exception $e) {
+      return false;
+    }
+
+    return $request;
+  }
+
+  /**
    * 読んだステータスをupdateする
    *
    * @desc

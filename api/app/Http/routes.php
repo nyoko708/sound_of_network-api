@@ -73,7 +73,7 @@ Route::group(['prefix' => 'api'], function () {
   // ------------------------ //
   // --- リクエスト系 API --- //
   // ------------------------ //
-  Route::get('/request/{requestId}', 'RequestController@get')->where('projectId', '[0-9]+');
+  Route::get('/request/{requestId}', 'RequestController@get')->where('requestId', '[0-9]+');
   Route::post('/request/create', 'RequestController@create');
   Route::post('/request/read', 'RequestController@read');
   Route::post('/request/response', 'RequestController@response');

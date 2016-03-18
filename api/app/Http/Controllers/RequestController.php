@@ -36,6 +36,30 @@ class RequestController extends Controller
    */
   public function get($requestId)
   {
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    $request = $this->_requestsModelObj->findMySendRequest($loginUser->id, $requestId);
+    if($request == false) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    if(!empty($request)) {
+      return response()->json(['status' => 'ok', 'request' => ['type' => 'send', 'data' => $request[0]]]);
+    }
+
+    $request = $this->_requestsModelObj->findMyReceiveRequest($loginUser->id, $requestId);
+    if($request == false) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    if(!empty($request)) {
+      return response()->json(['status' => 'ok', 'request' => ['type' => 'receive', 'data' => $request[0]]]);
+    }
+
+    return response()->json(['status' => 'ng', 'message' => 'data get error.']);
   }
 
   /**
@@ -56,7 +80,7 @@ class RequestController extends Controller
     if($requests === false) {
       return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
     }
-    return response()->json(['status' => 'ok', 'requests' => ['send' => $requests["send"], 'response' => $requests["receive"]]]);
+    return response()->json(['status' => 'ok', 'requests' => ['send' => $requests["send"], 'receive' => $requests["receive"]]]);
   }
 
   /**
