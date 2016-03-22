@@ -42,8 +42,8 @@ class RequestController extends Controller
     }
 
     $request = $this->_requestsModelObj->findMySendRequest($loginUser->id, $requestId);
-    if($request == false) {
-      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    if($request === false) {
+      return response()->json(['status' => 'ng', 'message' => 'get data error.']);
     }
 
     if(!empty($request)) {
@@ -51,8 +51,8 @@ class RequestController extends Controller
     }
 
     $request = $this->_requestsModelObj->findMyReceiveRequest($loginUser->id, $requestId);
-    if($request == false) {
-      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    if($request === false) {
+      return response()->json(['status' => 'ng', 'message' => 'get data error.']);
     }
 
     if(!empty($request)) {
