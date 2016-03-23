@@ -36,7 +36,18 @@ class Requests extends Model
   public function findMySendRequest($userId, $requestId)
   {
     try {
-      $request = DB::table('requests')->where('from_user_id', $userId)->where('requests_id', $requestId)->get();
+      $request = DB::select('select
+                               requests.*,
+                               u1.name as to_user_name,
+                               u2.name as from_user_name
+                             from requests
+                             inner join users u1 on requests.to_user_id = u1.id
+                             inner join users u2 on requests.from_user_id = u2.id
+                             where
+                               from_user_id = :id
+                             and
+                               requests_id = :reqId',
+                            ['id' => $userId, 'reqId' => $requestId]);
     } catch(Exception $e) {
       return false;
     }
@@ -50,7 +61,18 @@ class Requests extends Model
   public function findMyReceiveRequest($userId, $requestId)
   {
     try {
-      $request = DB::table('requests')->where('to_user_id', $userId)->where('requests_id', $requestId)->get();
+      $request = DB::select('select
+                              requests.*,
+                              u1.name as to_user_name,
+                              u2.name as from_user_name
+                             from requests
+                             inner join users u1 on requests.to_user_id = u1.id
+                             inner join users u2 on requests.from_user_id = u2.id
+                             where
+                               to_user_id = :id
+                             and
+                               requests_id = :reqId',
+                            ['id' => $userId, 'reqId' => $requestId]);
     } catch(Exception $e) {
       return false;
     }
