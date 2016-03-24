@@ -102,8 +102,17 @@ class Requests extends Model
    * レスポンスステータスをupdateする
    *
    */
-  public function updateResponseStatus($requestId, $statusCode)
+  public function updateResponseStatus($toUserId, $requestId, $statusCode)
   {
+    try {
+      DB::table('requests')
+        ->where('to_user_id', $toUserId)
+        ->where('requests_id', $requestId)
+        ->update(['response_status' => $statusCode]);
+    } catch(Exception $e) {
+      return false;
+    }
+    return true;
   }
 
   /**

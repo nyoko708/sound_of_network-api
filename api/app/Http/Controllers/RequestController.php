@@ -105,8 +105,20 @@ class RequestController extends Controller
   /**
    * 届いたリクエストに対して返信する
    */
-  public function response()
+  public function response(Request $request)
   {
+    $input = $request->only(['request_id', 'status_code']);
+
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    if($this->_requestsModelObj->updateResponseStatus($loginUser->id, $input["request_id"], $input["status_code"]) == false) {
+      return response()->json(['status' => 'ng', 'message' => 'update error.']);
+    }
+
+    return response()->json(['status' => 'ok', 'message' => 'update success.']);
   }
 
   /**
