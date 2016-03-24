@@ -86,8 +86,20 @@ class RequestController extends Controller
   /**
    * ユーザーが届いたリクエストを読んだらread_statusを1にする
    */
-  public function read($requestId, $status)
+  public function read(Request $request)
   {
+    $input = $request->only(['request_id']);
+
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    if($this->_requestsModelObj->updateReadStatus($loginUser->id, $input["request_id"]) == false) {
+      return response()->json(['status' => 'ng', 'message' => 'update error.']);
+    }
+
+    return response()->json(['status' => 'ok', 'message' => 'update success.']);
   }
 
   /**

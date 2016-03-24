@@ -85,15 +85,24 @@ class Requests extends Model
    *
    * @desc
    */
-  public function updateReadStatus()
+  public function updateReadStatus($toUserId, $requestId)
   {
+    try {
+      DB::table('requests')
+        ->where('to_user_id', $toUserId)
+        ->where('requests_id', $requestId)
+        ->update(['read_status' => 1]);
+    } catch(Exception $e) {
+      return false;
+    }
+    return true;
   }
 
   /**
    * レスポンスステータスをupdateする
    *
    */
-  public function updateResponseStatus()
+  public function updateResponseStatus($requestId, $statusCode)
   {
   }
 
