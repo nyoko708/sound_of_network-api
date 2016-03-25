@@ -52,4 +52,21 @@ class User extends Model
     }
     return $myData;
   }
+
+  /**
+   * 自分のできることを取得する
+   *
+   * @param int $userId
+   * @return object
+   * @access public
+   */
+  public function myCanDo($userId)
+  {
+    try {
+      $myCanDo = DB::select('select d.name, uc.level from users as u inner join user_cando as uc on u.id = uc.user_id inner join doit as d on uc.doit_id = d.doit_id where u.id = ?', [$userId]);
+    } catch(Exception $e) {
+      return false;
+    }
+    return $myCanDo;
+  }
 }

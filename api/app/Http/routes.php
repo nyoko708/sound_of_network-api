@@ -48,7 +48,8 @@ Route::group(['prefix' => 'api'], function () {
   // ---------------- //
   // --- me系 API --- //
   // ---------------- //
-  Route::get('/me/profile', 'UserController@myProfile');
+  Route::get('/me/profile',       'UserController@myProfile');
+  Route::get('/me/profile/cando', 'UserController@myCanDo');
   Route::get('/me/projects', 'ProjectController@myProject');
   Route::get('/me/requests', 'RequestController@myRequests');
 

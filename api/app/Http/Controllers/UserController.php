@@ -46,6 +46,25 @@ class UserController extends Controller
   }
 
   /**
+   * 自分ができることを取得する
+   */
+  public function myCanDo()
+  {
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
+    $myCanDo = $this->_userModelObj->myCanDo($loginUser->id);
+
+    return response()->json(['status' => 'ok', 'cando' => $myCanDo]);
+  }
+
+  public function findCanDoOfUser($userId)
+  {
+  }
+
+  /**
    * 指定したIDのUserDataを取得する
    */
   public function get($id=null)
