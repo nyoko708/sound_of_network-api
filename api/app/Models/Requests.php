@@ -18,8 +18,22 @@ class Requests extends Model
     $requests = array();
 
     try {
-      $sendRequests = DB::table('requests')->where("from_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
-      $receiveRequests = DB::table('requests')->where("to_user_id", $userId)->skip(0)->take(10)->orderBy('requests_id', 'desc')->get();
+      $sendRequests = DB::table('requests')
+        ->join('users', 'users.id', '=', 'requests.to_user_id')
+        ->select('requests.*', 'users.name')
+        ->where("from_user_id", $userId)
+        ->skip(0)
+        ->take(10)
+        ->orderBy('requests_id', 'desc')
+        ->get();
+      $receiveRequests = DB::table('requests')
+        ->join('users', 'users.id', '=', 'requests.from_user_id')
+        ->select('requests.*', 'users.name')
+        ->where("to_user_id", $userId)
+        ->skip(0)
+        ->take(10)
+        ->orderBy('requests_id', 'desc')
+        ->get();
     } catch(Exception $e) {
       return false;
     }
