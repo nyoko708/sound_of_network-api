@@ -15,8 +15,8 @@ class UserPoint extends Migration
       Schema::create('user_point', function(Blueprint $table)
       {
         $table->integer('user_id');
-        $table->integer('point')->defalut(0);
-        $table->integer('point')->defalut(0);
+        $table->integer('my_point')->defalut(0);
+        $table->integer('event_point')->defalut(0);
         $table->timestamps();
         $table->boolean('delete_flag')->default(0);
       });
