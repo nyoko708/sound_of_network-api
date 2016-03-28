@@ -16,6 +16,10 @@ class UserPointHistory extends Migration
       {
         $table->integer('user_id');
         $table->integer('payments');
+        $table->char('to', 20);
+        $table->char('from', 20);
+        $table->tinyInteger('point_kind_flag');
+        $table->boolean('delete_flag')->default(0);
         $table->timestamps();
       });
     }
@@ -27,6 +31,6 @@ class UserPointHistory extends Migration
      */
     public function down()
     {
-        //
+      Schema::drop('user_point_history');
     }
 }

@@ -29,11 +29,33 @@ class User extends Model
   public function findUserList()
   {
     try {
-      $users = DB::table('users')->select('id', 'name', 'email', 'description', 'area_id', 'cando_id')->skip(0)->take(10)->orderBy('id', 'desc')->get();
+      $res = DB::table('users')
+              ->leftjoin('user_area', 'users.id', '=', 'user_area.user_id')
+              ->leftJoin('area', 'user_area.area_id', '=', 'area.id')
+              ->select('users.id', 'users.name', 'users.description', 'user_area.area_id', 'area.area_name')
+              ->skip(0)->take(10)->orderBy('id', 'desc')->get();
     } catch(Exception $e) {
       return false;
     }
-    return $users;
+
+    $users = array();
+    $areas = array();
+    foreach($res as $obj) {
+      $vars = get_object_vars($obj);
+      $areas[$vars["id"]][] = array( "area_id" => $vars["area_id"], "area_name" => $vars["area_name"] );
+      unset($vars["area_id"]);
+      unset($vars["area_name"]);
+      $users[$vars["id"]] = $vars;
+    }
+
+    $response = array();
+    foreach($users as $userId => $value) {
+      $value["area"] = $areas[$userId];
+      $response[] = $value;
+    }
+
+
+    return $response;
   }
 
   /**
@@ -46,11 +68,28 @@ class User extends Model
   public function myProfile($userId)
   {
     try {
-      $myData = DB::table('users')->where('id', $userId)->get();
+      $myData = DB::table('users')
+                  ->select('id', 'name', 'description')
+                  ->where('id', $userId)->get();
+
+      $myArea = DB::table('user_area')
+                  ->leftJoin('area', 'user_area.area_id', '=', 'area.id')
+                  ->select('user_area.area_id', 'area.area_name')
+                  ->where('user_area.user_id', $userId)
+                  ->get();
     } catch(Exception $e) {
       return false;
     }
-    return $myData;
+
+    $response = array();
+    if(!empty($myData)) {
+      foreach($myArea as $value) {
+        $myData[0]->area[] = $value;
+      }
+      $response = $myData;
+    }
+
+    return $response;
   }
 
   /**
