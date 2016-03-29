@@ -20,7 +20,7 @@ class Requests extends Model
     try {
       $sendRequests = DB::table('requests')
         ->join('users', 'users.id', '=', 'requests.to_user_id')
-        ->select('requests.*', 'users.name')
+        ->select('requests.*', 'users.name', 'users.image_file_name')
         ->where("from_user_id", $userId)
         ->skip(0)
         ->take(10)
@@ -28,7 +28,7 @@ class Requests extends Model
         ->get();
       $receiveRequests = DB::table('requests')
         ->join('users', 'users.id', '=', 'requests.from_user_id')
-        ->select('requests.*', 'users.name')
+        ->select('requests.*', 'users.name', 'users.image_file_name')
         ->where("to_user_id", $userId)
         ->skip(0)
         ->take(10)

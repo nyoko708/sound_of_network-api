@@ -25,7 +25,7 @@ class UserController extends Controller
    */
   public function __construct(User $user)
   {
-    $this->middleware('jwt.auth', ['except' => ['create', 'get']]);
+    $this->middleware('jwt.auth', ['except' => ['create', 'get', 'findCanDoOfUser']]);
 
     $this->_userModelObj = $user;
   }
@@ -60,8 +60,13 @@ class UserController extends Controller
     return response()->json(['status' => 'ok', 'cando' => $myCanDo]);
   }
 
+  /**
+   * 指定したユーザーのできることリスト取得
+   */
   public function findCanDoOfUser($userId)
   {
+    $canDo = $this->_userModelObj->myCanDo($userId);
+    return response()->json(['status' => 'ok', 'cando' => $canDo]);
   }
 
   /**

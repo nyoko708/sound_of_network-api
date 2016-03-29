@@ -47,7 +47,7 @@ class Projects extends Model
       $myProjects = DB::table('projects')
         ->join('project_members', 'projects.id', '=', 'project_members.project_id')
         ->select('projects.*')
-        ->where("user_id", $userId)
+        ->where("project_members.user_id", $userId)
         ->skip(0)
         ->take(10)
         ->orderBy('id', 'desc')
@@ -79,13 +79,32 @@ class Projects extends Model
   }
 
   /**
+   * プロジェクトIDからプロジェクトメンバーを返す
+   */
+  public function findProjectMembers($projectId)
+  {
+    try {
+      $members = DB::table('project_members')
+                  ->leftJoin('users', 'project_members.user_id', '=', 'users.id')
+                  ->select('users.id', 'users.name', 'users.image_file_name')
+                  ->where('project_members.project_id', $projectId)
+                  ->orderBy('users.id', 'desc')
+                  ->get();
+    } catch(Exception $e) {
+      return false;
+    }
+
+    return $members;
+  }
+
+  /**
    * 新規にプロジェクトを作成する
    *
    * @param array $projectData
    * @return boolean
    * @access public
    */
-  public function createProject(array $projectData)
+  public function createProject(array $projectData, $userId)
   {
     //error_log(var_export($insertData, true), 3, "/tmp/errors2.log");
 
@@ -105,7 +124,7 @@ class Projects extends Model
       ]);
 
       DB::table('project_members')->insert(
-        ['project_id' => $projectId, 'user_id' => 1, 'created_at' => $date, 'updated_at' => $date]
+        ['project_id' => $projectId, 'user_id' => $userId, 'created_at' => $date, 'updated_at' => $date]
       );
     } catch(Exception $e) {
       DB::rollBack();

@@ -23,7 +23,7 @@ class ProjectController extends Controller
    */
   public function __construct(Projects $projects)
   {
-    $this->middleware('jwt.auth', ['except' => ['get']]);
+    $this->middleware('jwt.auth', ['except' => ['get', 'members']]);
     $this->projects = $projects;
   }
 
@@ -72,6 +72,19 @@ class ProjectController extends Controller
   }
 
   /**
+   * /project/{{projectId}}/members
+   */
+  public function members($projectId)
+  {
+    $members = $this->projects->findProjectMembers($projectId);
+    if($members === false) {
+        return response()->json(['status' => 'ng', 'message' => 'get data miss.']);
+    }
+
+    return response()->json(['status' => 'ok', 'project_members' => $members]);
+  }
+
+  /**
    * /project/create API
    *
    * @desc プロジェクト新規作成 API
@@ -83,8 +96,13 @@ class ProjectController extends Controller
     // POST データを受け取る Validationもここでしてます
     $postData = $request->input();
 
+    $loginUser = JWTAuth::parseToken()->toUser();
+    if(!is_object($loginUser)) {
+      return response()->json(['status' => 'ng', 'message' => 'auth error.']);
+    }
+
     // 新規登録処理
-    $projectId = $this->projects->createProject($postData);
+    $projectId = $this->projects->createProject($postData, $loginUser->id);
     if($projectId === false) {
       return response()->json(['status' => 'ng', 'message' => 'create project miss.']);
     }

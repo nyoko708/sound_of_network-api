@@ -32,7 +32,7 @@ class User extends Model
       $res = DB::table('users')
               ->leftjoin('user_area', 'users.id', '=', 'user_area.user_id')
               ->leftJoin('area', 'user_area.area_id', '=', 'area.id')
-              ->select('users.id', 'users.name', 'users.description', 'user_area.area_id', 'area.area_name')
+              ->select('users.id', 'users.name', 'users.description', 'users.image_file_name', 'user_area.area_id', 'area.area_name')
               ->skip(0)->take(10)->orderBy('id', 'desc')->get();
     } catch(Exception $e) {
       return false;
@@ -69,7 +69,7 @@ class User extends Model
   {
     try {
       $myData = DB::table('users')
-                  ->select('id', 'name', 'description')
+                  ->select('id', 'name', 'description', 'image_file_name')
                   ->where('id', $userId)->get();
 
       $myArea = DB::table('user_area')
