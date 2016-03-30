@@ -84,6 +84,14 @@ class Projects extends Model
   public function findProjectMembers($projectId)
   {
     try {
+      $count = DB::table('project_members')
+                ->leftJoin('users', 'project_members.user_id', '=', 'users.id')
+                ->select('users.id', 'users.name', 'users.image_file_name')
+                ->where('project_members.project_id', $projectId)
+                ->orderBy('users.id', 'desc')
+                ->count();
+
+
       $members = DB::table('project_members')
                   ->leftJoin('users', 'project_members.user_id', '=', 'users.id')
                   ->select('users.id', 'users.name', 'users.image_file_name')
@@ -94,7 +102,7 @@ class Projects extends Model
       return false;
     }
 
-    return $members;
+    return array( "allcount" => $count, "members" => $members );
   }
 
   /**
